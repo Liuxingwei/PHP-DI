@@ -30,15 +30,23 @@ class FactoryDefinition implements Definition
     private $parameters = [];
 
     /**
+     * Scope parameter
+     * @var string
+     */
+    private $scopeParameter = 'singleton';
+
+    /**
      * @param string $name Entry name
      * @param callable $factory Callable that returns the value associated to the entry name.
      * @param array $parameters Parameters to be passed to the callable
+     * @param \string $scoeParameter
      */
-    public function __construct(string $name, $factory, array $parameters = [])
+    public function __construct(string $name, $factory, array $parameters = [], $scoeParameter = 'singleton')
     {
         $this->name = $name;
         $this->factory = $factory;
         $this->parameters = $parameters;
+        $this->scopeParameter = $scoeParameter;
     }
 
     public function getName() : string
@@ -65,6 +73,14 @@ class FactoryDefinition implements Definition
     public function getParameters() : array
     {
         return $this->parameters;
+    }
+
+    /**
+     * @return \string
+     */
+    public function getScopeParameter()
+    {
+        return $this->scopeParameter;
     }
 
     public function replaceNestedDefinitions(callable $replacer)

@@ -6,6 +6,7 @@ namespace DI\Definition\Source;
 
 use DI\Annotation\Inject;
 use DI\Annotation\Injectable;
+use DI\Annotation\Scope;
 use DI\Definition\Exception\InvalidAnnotation;
 use DI\Definition\ObjectDefinition;
 use DI\Definition\ObjectDefinition\MethodInjection;
@@ -64,6 +65,8 @@ class AnnotationBasedAutowiring implements DefinitionSource, Autowiring
 
         $class = new ReflectionClass($className);
 
+        $this->readScopeAnnotation($class, $definition);
+
         $this->readInjectableAnnotation($class, $definition);
 
         // Browse the class properties looking for annotated properties
@@ -91,6 +94,16 @@ class AnnotationBasedAutowiring implements DefinitionSource, Autowiring
     public function getDefinitions() : array
     {
         return [];
+    }
+
+    private function readScopeAnnotation(ReflectionClass $class, ObjectDefinition $definition)
+    {
+        $annotation = $this->getAnnotationReader()->getClassAnnotation($class, 'DI\Annotation\Scope');
+        if (!$annotation instanceof Scope) {
+            return;
+        }
+        $parameter = $annotation->getValue();
+        $definition->setScopeParameter($parameter);
     }
 
     /**

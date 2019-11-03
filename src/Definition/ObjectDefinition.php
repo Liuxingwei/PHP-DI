@@ -30,6 +30,13 @@ class ObjectDefinition implements Definition
     protected $className;
 
     /**
+     * Class scope parameter
+     *
+     * @var string
+     */
+    protected $scopeParameter = 'singleton';
+
+    /**
      * Constructor parameter injection.
      * @var MethodInjection|null
      */
@@ -181,6 +188,16 @@ class ObjectDefinition implements Definition
             // Set
             $this->addMethodInjection($injection);
         }
+    }
+
+    public function setScopeParameter(string $scopeParameter)
+    {
+        $this->scopeParameter = $scopeParameter;
+    }
+
+    public function getScopeParameter()
+    {
+        return $this->scopeParameter;
     }
 
     public function setLazy(bool $lazy = null)

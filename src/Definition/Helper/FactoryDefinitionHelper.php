@@ -31,6 +31,11 @@ class FactoryDefinitionHelper implements DefinitionHelper
     private $parameters = [];
 
     /**
+     * @var array
+     */
+    private $scopeParameter = 'singleton';
+
+    /**
      * @param callable $factory
      * @param bool $decorate Is the factory decorating a previous definition?
      */
@@ -50,7 +55,7 @@ class FactoryDefinitionHelper implements DefinitionHelper
             return new DecoratorDefinition($entryName, $this->factory, $this->parameters);
         }
 
-        return new FactoryDefinition($entryName, $this->factory, $this->parameters);
+        return new FactoryDefinition($entryName, $this->factory, $this->parameters, $this->scopeParameter);
     }
 
     /**
@@ -70,6 +75,12 @@ class FactoryDefinitionHelper implements DefinitionHelper
     {
         $this->parameters[$parameter] = $value;
 
+        return $this;
+    }
+
+    public function scope(string $scopeParameter)
+    {
+        $this->scopeParameter = $scopeParameter;
         return $this;
     }
 }

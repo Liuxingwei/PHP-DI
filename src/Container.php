@@ -125,14 +125,20 @@ class Container implements ContainerInterface, FactoryInterface, InvokerInterfac
      */
     public function get($name)
     {
-        // If the entry is already resolved we return it
-        if (isset($this->resolvedEntries[$name]) || array_key_exists($name, $this->resolvedEntries)) {
-            return $this->resolvedEntries[$name];
+        // If definition is fethed, immefiately get it
+        if (key_exists($name, $this->fetchedDefinitions)) {
+            $definition = $this->fetchedDefinitions[$name];
+        } else {
+            $definition = $this->getDefinition($name);
         }
 
-        $definition = $this->getDefinition($name);
-        if (! $definition) {
+        if (!$definition) {
             throw new NotFoundException("No entry or class found for '$name'");
+        }
+
+        // If scope of the definition is 'singleton', and the entry is already resolved, we return it
+        if ((method_exists($definition, 'getScopeParameter') && 'singleton' === $definition->getScopeParameter()) && (isset($this->resolvedEntries[$name]) || array_key_exists($name, $this->resolvedEntries))) {
+            return $this->resolvedEntries[$name];
         }
 
         $value = $this->resolveDefinition($definition);
