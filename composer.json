@@ -1,9 +1,8 @@
 {
-    "name": "php-di/php-di",
+    "name": "liuxingwei/php-di",
     "type": "library",
-    "description": "The dependency injection container for humans",
+    "description": "The dependency injection container for humans, fork from php-di/php-di",
     "keywords": ["di", "dependency injection", "container", "ioc", "psr-11", "psr11", "container-interop"],
-    "homepage": "http://php-di.org/",
     "license": "MIT",
     "autoload": {
         "psr-4": {
